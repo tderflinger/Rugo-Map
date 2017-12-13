@@ -10,7 +10,6 @@ import "./helpers/external_links.js";
 
 import { remote } from "electron";
 import jetpack from "fs-jetpack";
-import { greet } from "./hello_world/hello_world";
 import env from "env";
 
 const app = remote.app;
@@ -30,21 +29,55 @@ const osMap = {
 };
 
 
-var layer = new L.StamenTileLayer("terrain");
+const {Menu, MenuItem} = remote
+
+const menu = new Menu()
+menu.append(new MenuItem({label: 'Load Track', click() { load(); }}));
+menu.append(new MenuItem({label: 'Save Track', click() { save(); }}))
+menu.append(new MenuItem({type: 'separator'}))
+menu.append(new MenuItem({label: 'OSM Layer', click: () => { map.removeLayer(lastLayer); map.addLayer(osmLayer); lastLayer = osmLayer; }}))
+menu.append(new MenuItem({label: 'Stamen Layer', click: () => { map.removeLayer(lastLayer); map.addLayer(stamenLayer); lastLayer = stamenLayer; }}))
+menu.append(new MenuItem({label: 'ESRI Layer', click: () => { map.removeLayer(lastLayer); map.addLayer(esriLayer); lastLayer = esriLayer; }}))
+menu.append(new MenuItem({label: 'Topomap Layer', click: () => { map.removeLayer(lastLayer); map.addLayer(topoLayer); lastLayer = topoLayer; }}))
+
+window.addEventListener('contextmenu', (e) => {
+  e.preventDefault()
+  menu.popup(remote.getCurrentWindow())
+}, false)
+
+
+
+var stamenLayer = new L.StamenTileLayer("terrain");
 var map = new L.Map("mainMap", {
   center: new L.LatLng(48.1345, 11.6053),
   zoom: 16
 });
 
-map.addLayer(layer);
+var esriLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+});
+
+var topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+
+var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+
+map.addLayer(esriLayer);
+
+var lastLayer = esriLayer;
 
 var options = {
   position: 'topleft', // toolbar position, options are 'topleft', 'topright', 'bottomleft', 'bottomright'
-  drawMarker: true, // adds button to draw markers
+  drawMarker: false, // adds button to draw markers
   drawPolyline: true, // adds button to draw a polyline
-  drawRectangle: true, // adds button to draw a rectangle
-  drawPolygon: true, // adds button to draw a polygon
-  drawCircle: true, // adds button to draw a cricle
+  drawRectangle: false, // adds button to draw a rectangle
+  drawPolygon: false, // adds button to draw a polygon
+  drawCircle: false, // adds button to draw a cricle
   cutPolygon: true, // adds button to cut a hole in a polygon
   editMode: true, // adds button to toggle edit mode for all layers
   removalMode: true, // adds a button to remove layers
