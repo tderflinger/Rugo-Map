@@ -1,5 +1,8 @@
 # Rugo Map
 
+Rugo Map is an Electron JavaScript desktop application. You can edit tracks on
+a map layer. Using the context menu you can save and load the tracks.
+
 # Development
 
 ## Requirements
@@ -21,6 +24,9 @@ npm install
 npm start
 ```
 
+## License
+
+Rugo Map is licensed under Apache 2.0 License.
 
 ## Trademark
 
