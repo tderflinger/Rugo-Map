@@ -45,8 +45,6 @@ window.addEventListener('contextmenu', (e) => {
   menu.popup(remote.getCurrentWindow())
 }, false)
 
-
-
 var stamenLayer = new L.StamenTileLayer("terrain");
 var map = new L.Map("mainMap", {
   center: new L.LatLng(48.1345, 11.6053),
@@ -178,8 +176,3 @@ window.load = function() {
 
 
 window.mappy = map;
-
-
-
-// window.mappy._layers
-// window.mappy.pm.Draw.Line._layer.getLatLngs()
