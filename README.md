@@ -2,6 +2,7 @@
 
 Rugo Map is an Electron JavaScript desktop application. You can edit tracks on
 a map layer. Using the context menu you can save and load the tracks.
+Furthermore, you can switch layers between OSM layer, ESRI layer, or Stamen layer.
 
 # Development
 
@@ -9,7 +10,7 @@ a map layer. Using the context menu you can save and load the tracks.
 
 Install a recent version of Node.
 
-## First time
+## First Time
 
 After cloning the source from Github, first run the following command:
 
@@ -18,11 +19,22 @@ npm install
 ```
 
 
-## Starting the app
+## Starting the Application
 
 ```
 npm start
 ```
+
+## References
+
+Rugo Map is standing on the shoulder of giants. It builds upon the following
+technologies:
+
+* OpenStreetMap
+* Node
+* Electron
+* Leaflet.js
+* Leaflet.pm
 
 ## License
 
