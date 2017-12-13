@@ -62,19 +62,32 @@ map.on('pm:create', function (e) {
 map.on('pm:edit', function (e) {
     console.log("pm:edit!");
     console.dir(window.mappy.pm.Draw.Line._layer.getLatLngs());
-      //debugger;
   });
 
 
 window.save = function() {
   let content = "";
+  let contentPure = "";
   let contentObj = {};
   for (const mylayer in window.mappy._layers) {
     if (typeof window.mappy._layers[mylayer].getLatLngs !== 'undefined') {
+      let coordinates = window.mappy._layers[mylayer].getLatLngs();
+      let polyl = [];
+      for (const coord of coordinates) {
+            let lat = coord['lat'];
+            let lng = coord['lng'];
+            polyl.push([lat, lng]);
+            console.log('Lat: '+lat+' / Long: '+lng);
+      }
+
       contentObj[mylayer] = window.mappy._layers[mylayer].getLatLngs();
       console.log("Layer: "+JSON.stringify(window.mappy._layers[mylayer].getLatLngs()));
+      if (polyl.length !== 0) {
+        contentPure += JSON.stringify(polyl);
+      }
     }
   }
+
 
   content = JSON.stringify(contentObj);
 
@@ -93,6 +106,15 @@ window.save = function() {
 
           alert("The file has been succesfully saved");
       });
+
+      fs.writeFile('./track.json', contentPure, (err) => {
+          if(err){
+              alert("An error ocurred creating the file "+ err.message)
+          }
+
+          alert("The file has been succesfully saved");
+      });
+
   });
 }
 
