@@ -1,3 +1,15 @@
+const gpxParse = require("gpx-parse");
+
+//from file
+gpxParse.parseGpxFromFile("./gpx/Munich.gpx", function(error, data) {
+	//do stuff
+	console.log('inside function!');
+	console.log(JSON.stringify(data));
+});
+
+
+// Layers
+
 const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -20,6 +32,13 @@ let rugoMap = new L.Map("mainMap", {
 });
 
 rugoMap.addLayer(osmLayer);
+
+// Search control
+
+//const provider = new OpenStreetMapProvider();
+//const searchControl = new GeoSearchControl({ provider: provider });
+
+//rugoMap.addControl(searchControl);
 
 var lastLayer = osmLayer;
 

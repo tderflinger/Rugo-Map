@@ -30,7 +30,7 @@ const rugoSave = function() {
 
   // You can obviously give a direct path without use the dialog (C:/Program Files/path/myfileexample.txt)
   dialog.showSaveDialog((fileName) => {
-      if (fileName === undefined){
+      if (typeof (fileName) === 'undefined'){
           console.log("You didn't save the file");
           return;
       }
