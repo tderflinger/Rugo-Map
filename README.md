@@ -4,6 +4,11 @@ Rugo Map is an Electron JavaScript desktop application. You can edit tracks on
 a map layer. Using the context menu (right mouse click) you can save and load the tracks.
 Furthermore, you can switch layers between OSM layer, ESRI layer, OpenTopomap, or Stamen layer.
 
+
+Load GPX files with the context menu and "Load GPX". You can then edit the track and
+save it with "Save Track" (in a custom format).
+
+
 # Development
 
 ## Requirements
@@ -25,6 +30,16 @@ npm install
 npm start
 ```
 
+
+## Roadmap
+
+On the roadmap there are several features:
+
+* save as GPX
+* load and save GeoJSON
+* load and save KML
+
+
 ## References
 
 Rugo Map is standing on the shoulder of giants. It builds upon the following
@@ -35,6 +50,7 @@ technologies:
 * Electron
 * Leaflet.js
 * Leaflet.pm
+* gpx-parse
 
 ## License
 

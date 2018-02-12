@@ -44,14 +44,6 @@ const rugoSave = function() {
           alert("The file has been succesfully saved");
       });
 
-      fs.writeFile('./track.json', contentPure, (err) => {
-          if(err){
-              alert("An error ocurred creating the file "+ err.message)
-          }
-
-          alert("The file has been succesfully saved");
-      });
-
   });
 }
 

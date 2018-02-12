@@ -1,15 +1,5 @@
-const gpxParse = require("gpx-parse");
-
-//from file
-gpxParse.parseGpxFromFile("./gpx/Munich.gpx", function(error, data) {
-	//do stuff
-	console.log('inside function!');
-	console.log(JSON.stringify(data));
-});
-
 
 // Layers
-
 const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'

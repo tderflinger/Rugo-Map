@@ -35,7 +35,16 @@ const {Menu, MenuItem} = remote
 
 const menu = new Menu()
 menu.append(new MenuItem({label: 'Load Track', click: () => { rugoLoad(); }}));
-menu.append(new MenuItem({label: 'Save Track', click: () => { rugoSave(); }}))
+menu.append(new MenuItem({label: 'Save Track', click: () => { rugoSave(); }}));
+menu.append(new MenuItem({label: 'Load GPX', click: () => {
+  const GPXParse = require('./loadGPX.js');
+  const gpxParse = new GPXParse();
+  const dialog = remote.dialog;
+
+  dialog.showOpenDialog((fileNames) => {
+    gpxParse.parse(fileNames[0]);
+  });
+}}));
 menu.append(new MenuItem({type: 'separator'}))
 menu.append(new MenuItem({label: 'OSM Layer', click: () => { rugoMap.switchLayer(1); }}))
 menu.append(new MenuItem({label: 'Stamen Layer', click: () => { rugoMap.switchLayer(2); }}))
