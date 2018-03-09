@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "/home/td/Pro/codereading/leaflet-map"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "app/plugins/leaflet-polymer"
+		},
+		{
+			"path": "/home/td/Pro/poi-extract"
+		}
+	],
+	"settings": {}
+}

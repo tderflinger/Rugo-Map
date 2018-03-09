@@ -5,6 +5,9 @@ module.exports = class GPXParse {
   parse(fileName) {
     //from file
     gpxParse.parseGpxFromFile(fileName, function(error, data) {
+      const element = document.getElementById("poly-map");
+      let mappy = element.getAttribute("map");
+      
     	//do stuff
     	console.log('inside function!');
     	console.log(JSON.stringify(data.tracks[0].segments));
@@ -20,13 +23,13 @@ module.exports = class GPXParse {
         polyl.push([lat, lng]);
       };
 
-      var polyline = L.polyline(polyl, {color: 'blue'}).addTo(window.mappy);
+      var polyline = L.polyline(polyl, {color: 'blue'}).addTo(mappy);
 
       var corner1 = L.latLng(polyl[0][0], polyl[0][1]),
       corner2 = L.latLng(polyl[polyl.length-1][0], polyl[polyl.length-1][1]),
       bounds = L.latLngBounds(corner1, corner2);
 
-      window.mappy.fitBounds(bounds);
+      mappy.fitBounds(bounds);
     });
   }
 }

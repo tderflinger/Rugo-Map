@@ -1,0 +1,197 @@
+<link rel="import" href="./bower_components/polymer/polymer-element.html">
+<link rel="import" href="./leaflet-import.html">
+
+<dom-module id="leaflet-polymer">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      :host #map {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
+    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+    crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css" /> 
+    <div id="map"></div>
+    <slot></slot>
+  </template>
+
+  <script>
+    /**
+     * `leaflet-polymer`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class LeafletPolymer extends Polymer.Element {
+
+      ready() {
+        super.ready();
+
+        setTimeout(() => {
+          this.layerKey = 'osm';
+          this.map = L.map(this.$.map).setView([this.latitude, this.longitude], this.zoom);
+          this._layerChanged('osm');
+          console.log("children: " + this.children);
+
+          for (let item of this.children) {
+            item.container = this.map;
+          }
+
+        }, 100);
+
+      }
+
+      _viewChanged(newValue, oldValue) {
+        if (typeof this.map !== 'undefined') {
+          this.map.setView(L.latLng(this.latitude, this.longitude), this.zoom);
+        }
+      }
+
+      _layerChanged(newValue, oldValue) {
+        if (typeof this.map === 'undefined') {
+          return;
+        }
+
+        if ((this.layerKey !== oldValue) && (typeof oldValue !== 'undefined')) {
+            this.map.removeLayer(this.layer);
+        }
+
+        switch (newValue) {
+          case 'osm':
+            this.layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              maxZoom: 19,
+              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            });
+            this.layerKey = 'osm';
+            break;
+          case 'esri':
+            this.layer = L.tileLayer(
+              'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+              });
+            this.layerKey = 'esri';
+            break;
+          case 'topo':
+            this.layer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+              maxZoom: 17,
+              attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+            });
+            this.layerKey = 'topo';
+            break;
+          case 'stamen':
+            this.layer = new L.StamenTileLayer("terrain");
+            this.layerKey = 'stamen';
+            break;  
+          default:
+        }
+
+        this.map.addLayer(this.layer);
+      }
+
+      static get is() {
+        return 'leaflet-polymer';
+      }
+
+      static get properties() {
+        return {
+          /**
+           * The `latitude` attribute sets the map center.
+           *
+           * @attribute latitude
+           * @type number
+           */
+          latitude: {
+            type: Number,
+            value: 51,
+            reflectToAttribute: true,
+            notify: true,
+            observer: '_viewChanged'
+          },
+
+          /**
+           * The `longitude` attribute sets the map center.
+           *
+           * @attribongitudeute longitude
+           * @type number
+           */
+          longitude: {
+            type: Number,
+            value: 10,
+            reflectToAttribute: true,
+            notify: true,
+            observer: '_viewChanged'
+          },
+
+          /**
+           * The `zoom` attribute sets the map zoom.
+           *
+           * @attribute zoom
+           * @type number
+           */
+          zoom: {
+            type: Number,
+            value: -1,
+            reflectToAttribute: true,
+            notify: true,
+            observer: '_viewChanged'
+          },
+
+
+          /**
+           * The `min-zoom` attribute sets the minimum zoom level of the map. Overrides any minZoom set on map layers.
+           *
+           * @attribute min-zoom
+           * @type number
+           */
+          minZoom: {
+            type: Number,
+            value: 5
+          },
+
+          /**
+           * The `max-zoom` attribute sets the maximum zoom level of the map. This overrides any maxZoom set on map layers.
+           *
+           * @attribute max-zoom
+           * @type number
+           */
+          maxZoom: {
+            type: Number,
+            value: 9007199254740992
+          },
+
+
+          /**
+           * The `layer-key` attribute sets the map center.
+           *
+           * @attribute layer-key
+           * @type string
+           */
+          layerKey: {
+            type: String,
+            value: 'osm',
+            reflectToAttribute: true,
+            notify: true,
+            observer: '_layerChanged'
+          },
+
+          map: {
+            type: Object,
+            reflectToAttribute: true,
+            notify: true
+          },
+
+        };
+      }
+    }
+
+    window.customElements.define(LeafletPolymer.is, LeafletPolymer);
+  </script>
+</dom-module>

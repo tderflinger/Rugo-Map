@@ -1,0 +1,115 @@
+<link rel="import" href="./bower_components/polymer/polymer-element.html">
+<link rel="import" href="./leaflet-import-pm.html">
+
+<dom-module id="leaflet-pm">
+    <template>
+
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+
+    </template>
+
+    <script>
+        /**
+         * `leaflet-marker`
+         * 
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class LeafletPM extends Polymer.Element {
+
+            constructor() {
+                super();
+
+            }
+
+            ready() {
+                super.ready();
+            }
+
+
+            static get is() {
+                return 'leaflet-pm';
+            }
+
+            _containerChanged(value) {
+                if (typeof value === 'undefined') {
+                    return;
+                }
+
+                this.map = value;
+
+                const options = {
+                    position: 'topleft', // toolbar position, options are 'topleft', 'topright', 'bottomleft', 'bottomright'
+                    drawMarker: this.marker, // adds button to draw markers
+                    drawPolyline: this.polyline, // adds button to draw a polyline
+                    drawRectangle: this.rectangle, // adds button to draw a rectangle
+                    drawPolygon: this.polygon, // adds button to draw a polygon
+                    drawCircle: this.circle, // adds button to draw a cricle
+                    cutPolygon: true, // adds button to cut a hole in a polygon
+                    editMode: true, // adds button to toggle edit mode for all layers
+                    removalMode: this.removal, // adds a button to remove layers
+                };
+
+                console.log("pm-container-changed");
+
+                if (typeof this.map.pm === 'undefined') {
+                    setTimeout(() => { this.map.pm.addControls(options); }, 1000);
+                    return;
+                }
+
+                // add leaflet.pm controls to the map
+                this.map.pm.addControls(options);
+
+            }
+
+            static get properties() {
+                return {
+
+                    container: {
+                        type: Object,
+                        observer: '_containerChanged'
+                    },
+
+                    marker: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    polyline: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    rectangle: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    polygon: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    circle: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    removal: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                }
+            }
+        }
+
+        window.customElements.define(LeafletPM.is, LeafletPM);
+    </script>
+</dom-module>

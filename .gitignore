@@ -10,4 +10,4 @@ Thumbs.db
 /app/app.js
 /app/background.js
 /app/**/*.map
-gpx/Munich.gpx
+gpx/*

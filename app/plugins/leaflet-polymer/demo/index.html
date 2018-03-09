@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <title>leaflet-polymer demo</title>
+
+    <script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+    <link rel="import" href="../leaflet-polymer.html" />
+    <link rel="import" href="../leaflet-marker.html" />
+    <link rel="import" href="../leaflet-pm.html" />
+
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic leaflet-polymer demo</h3>
+      <leaflet-polymer latitude="40" longitude="10" zoom="5" layer-key="osm">
+        <leaflet-marker id="marker" latitude="40.3" longitude="11.2" opacity="0.5" draggable="true" auto-pan="true" keyboard="true"
+        title="RoverX" alt="SEO" z-index-offset="10000"></leaflet-marker>
+        <leaflet-pm marker="true" polyline="true" removal="true"></leaflet-pm>
+      </leaflet-polymer>
+      <br/>
+      <leaflet-polymer latitude="40" longitude="10" zoom="5" layer-key="osm">
+        <leaflet-marker id="marker2" latitude="40.1" longitude="10.2"></leaflet-marker>
+        <leaflet-marker id="marker2" latitude="40.3" longitude="11.2"></leaflet-marker>
+      </leaflet-polymer>
+
+    </div>
+  </body>
+</html>

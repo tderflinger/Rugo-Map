@@ -12,7 +12,7 @@ import { remote } from "electron";
 import jetpack from "fs-jetpack";
 import env from "env";
 
-import rugoMap from './rugoMap';
+//import rugoMap from './rugoMap';
 import rugoLoad from './load';
 import rugoSave from './save';
 
@@ -30,6 +30,10 @@ const osMap = {
   linux: "Linux"
 };
 
+const OSM_LAYER = "osm";
+const STAMEN_LAYER = "stamen";
+const ESRI_LAYER = "esri";
+const TOPO_LAYER = "topo";
 
 const {Menu, MenuItem} = remote
 
@@ -45,15 +49,34 @@ menu.append(new MenuItem({label: 'Load GPX', click: () => {
     gpxParse.parse(fileNames[0]);
   });
 }}));
-menu.append(new MenuItem({type: 'separator'}))
-menu.append(new MenuItem({label: 'OSM Layer', click: () => { rugoMap.switchLayer(1); }}))
-menu.append(new MenuItem({label: 'Stamen Layer', click: () => { rugoMap.switchLayer(2); }}))
-menu.append(new MenuItem({label: 'ESRI Layer', click: () => { rugoMap.switchLayer(3); }}))
-menu.append(new MenuItem({label: 'Topomap Layer', click: () => { rugoMap.switchLayer(4); }}))
+
+
+function changeLayer(layerKey) {
+  const element = document.getElementById('poly-map');
+  element.setAttribute("layer-key", layerKey);
+}
+
+menu.append(new MenuItem({type: 'separator'}));
+
+menu.append(new MenuItem({label: 'OSM Layer', click: () => {
+  changeLayer(OSM_LAYER);
+}}));
+
+menu.append(new MenuItem({label: 'Stamen Layer', click: () => { 
+  changeLayer(STAMEN_LAYER);
+}}));
+
+menu.append(new MenuItem({label: 'ESRI Layer', click: () => { 
+  changeLayer(ESRI_LAYER);
+}}));
+
+menu.append(new MenuItem({label: 'Topomap Layer', click: () => { 
+  changeLayer(TOPO_LAYER); 
+}}));
 
 window.addEventListener('contextmenu', (e) => {
   e.preventDefault()
   menu.popup(remote.getCurrentWindow())
 }, false)
 
-window.mappy = rugoMap;
+//window.mappy = rugoMap;

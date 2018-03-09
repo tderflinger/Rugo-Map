@@ -1,0 +1,175 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+
+<dom-module id="leaflet-marker">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+  </template>
+
+  <script>
+    /**
+     * `leaflet-marker`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class LeafletMarker extends Polymer.Element {
+
+      ready() {
+        super.ready();
+      }
+
+      static get is() {
+        return 'leaflet-marker';
+      }
+
+      _containerChanged(value) {
+        console.log("container changed!" + this.zIndexOffset);
+        this.map = value;
+        this.feature = L.marker([this.latitude, this.longitude], {
+          //	clickable: !this.noClickable,
+          draggable: this.draggable,
+          autoPan: this.autoPan,
+          keyboard: this.keyboard,
+          title: this.title,
+          alt: this.alt,
+          zIndexOffset: this.zIndexOffset,
+          /*	riseOnHover: this.riseOnHover,
+          	riseOffset: this.riseOffset, */
+        }).addTo(this.map);
+
+        if (typeof this.opacity !== 'undefined') {
+          this.feature.setOpacity(this.opacity);
+        }
+      }
+
+      _opacityChanged(value) {
+        this.opacity = value;
+
+        if (typeof this.feature !== 'undefined') {
+          this.feature.setOpacity(this.opacity);
+        }
+      }
+
+      _zIndexOffsetChanged(value) {
+        this.zIndexOffset = value;
+
+        if (typeof this.feature !== 'undefined') {
+          console.log("ZINDEXOFFSET!!");
+          this.feature.setZIndexOffset(this.zIndexOffset);
+        }
+      }
+
+
+      static get properties() {
+        return {
+          /**
+           * The `latitude` attribute sets the map center.
+           *
+           * @attribute latitude
+           * @type number
+           */
+          latitude: {
+            type: Number,
+            value: 51,
+            reflectToAttribute: true,
+          },
+
+          /**
+           * The `longitude` attribute sets the map center.
+           *
+           * @attribongitudeute longitude
+           * @type number
+           */
+          longitude: {
+            type: Number,
+            value: 10,
+            reflectToAttribute: true,
+          },
+
+          container: {
+            type: Object,
+            observer: '_containerChanged'
+          },
+
+          /**
+           * The `opacity` attribute sets the opacity of the marker.
+           * 
+           * @attribute opacity
+           * @type number
+           */
+          opacity: {
+            type: Number,
+            value: 1.0,
+            observer: '_opacityChanged'
+          },
+
+          /**
+           * The `draggable` attribute sets the whether the marker is draggable with mouse/touch or not.
+           * 
+           * @attribute draggable
+           * @type bool
+           */
+          draggable: {
+            type: Boolean,
+            value: false
+          },
+
+          /* Set it to true if you want the map to do panning animation when marker hits the edges. */
+          autoPan: {
+            type: Boolean,
+            value: false
+          },
+
+          keyboard: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+           * The `title` attribute sets the text for the browser tooltip that appear on marker hover (no tooltip by default).
+           * 
+           * @attribute title
+           * @type string
+           */
+          title: {
+            type: String,
+            value: ''
+          },
+
+          /**
+           * The `alt` attribute sets the text for the alt attribute of the icon image (useful for accessibility).
+           * 
+           * @attribute alt
+           * @type string
+           */
+          alt: {
+            type: String,
+            value: ''
+          },
+
+          /**
+           * The `z-index-offset` attribute sets the zIndexOffset. By default, marker images zIndex is set automatically based on its latitude
+           * 
+           * @attribute z-index-offset
+           * @type number
+           */
+          zIndexOffset: {
+            type: Number,
+            value: 0,
+            observer: '_zIndexOffsetChanged'
+          },
+
+        }
+      }
+    }
+
+    window.customElements.define(LeafletMarker.is, LeafletMarker);
+  </script>
+</dom-module>
