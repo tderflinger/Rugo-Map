@@ -12,11 +12,11 @@
         height: 100%;
         width: 100%;
       }
+
     </style>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
-    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
-    crossorigin=""/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css" /> 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+      crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css" />
     <div id="map"></div>
     <slot></slot>
   </template>
@@ -47,6 +47,55 @@
 
         }, 100);
 
+        this.addEventListener('export', (e) => {
+          let content = "";
+          let contentPure = "";
+          let contentObj = {};
+          for (const mylayer in this.map._layers) {
+            if (typeof this.map._layers[mylayer].getLatLngs !== 'undefined') {
+              let coordinates = this.map._layers[mylayer].getLatLngs();
+              let polyl = [];
+              for (const coord of coordinates) {
+                let lat = coord['lat'];
+                let lng = coord['lng'];
+                polyl.push([lat, lng]);
+                console.log('Lat: ' + lat + ' / Long: ' + lng);
+              }
+
+              contentObj[mylayer] = this.map._layers[mylayer].getLatLngs();
+              console.log("Layer: " + JSON.stringify(this.map._layers[mylayer].getLatLngs()));
+              if (polyl.length !== 0) {
+                contentPure += JSON.stringify(polyl);
+              }
+            }
+          }
+
+          this.polylines = JSON.stringify(contentObj);
+          console.log("export!!");
+        });
+
+        this.addEventListener('import', (e) => {
+          const jsonData = JSON.parse(this.polylines);
+
+          console.log(JSON.stringify(jsonData));
+
+          for (const mylayer in jsonData) {
+            let polyl = [];
+
+            let coordinates = jsonData[mylayer];
+            for (const coord of coordinates) {
+              let lat = coord['lat'];
+              let lng = coord['lng'];
+              polyl.push([lat, lng]);
+            }
+
+            var polyline = L.polyline(polyl, {
+              color: 'blue'
+            }).addTo(this.map);
+          }
+
+
+        });
       }
 
       _viewChanged(newValue, oldValue) {
@@ -61,7 +110,7 @@
         }
 
         if ((this.layerKey !== oldValue) && (typeof oldValue !== 'undefined')) {
-            this.map.removeLayer(this.layer);
+          this.map.removeLayer(this.layer);
         }
 
         switch (newValue) {
@@ -89,7 +138,7 @@
           case 'stamen':
             this.layer = new L.StamenTileLayer("terrain");
             this.layerKey = 'stamen';
-            break;  
+            break;
           default:
         }
 
@@ -182,10 +231,9 @@
             observer: '_layerChanged'
           },
 
-          map: {
-            type: Object,
-            reflectToAttribute: true,
-            notify: true
+          polylines: {
+            type: String,
+            reflectToAttribute: true
           },
 
         };
@@ -193,5 +241,6 @@
     }
 
     window.customElements.define(LeafletPolymer.is, LeafletPolymer);
+
   </script>
 </dom-module>
