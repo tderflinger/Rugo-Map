@@ -89,9 +89,15 @@
               polyl.push([lat, lng]);
             }
 
-            var polyline = L.polyline(polyl, {
+            const polyline = L.polyline(polyl, {
               color: 'blue'
             }).addTo(this.map);
+
+            let corner1 = L.latLng(polyl[0][0], polyl[0][1]),
+              corner2 = L.latLng(polyl[polyl.length - 1][0], polyl[polyl.length - 1][1]),
+              bounds = L.latLngBounds(corner1, corner2);
+
+            this.map.fitBounds(bounds);
           }
 
 
@@ -234,8 +240,7 @@
           polylines: {
             type: String,
             reflectToAttribute: true
-          },
-
+          }
         };
       }
     }

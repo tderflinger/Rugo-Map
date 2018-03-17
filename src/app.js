@@ -12,9 +12,9 @@ import { remote } from "electron";
 import jetpack from "fs-jetpack";
 import env from "env";
 
-//import rugoMap from './rugoMap';
 import rugoLoad from './load';
 import rugoSave from './save';
+import rugoSaveGpx from './saveGPX';
 
 const app = remote.app;
 
@@ -49,6 +49,7 @@ menu.append(new MenuItem({label: 'Load GPX', click: () => {
     gpxParse.parse(fileNames[0]);
   });
 }}));
+menu.append(new MenuItem({label: 'Save GPX', click: () => { rugoSaveGpx(); }}));
 
 
 function changeLayer(layerKey) {
@@ -79,4 +80,3 @@ window.addEventListener('contextmenu', (e) => {
   menu.popup(remote.getCurrentWindow())
 }, false)
 
-//window.mappy = rugoMap;

@@ -3,15 +3,12 @@ const gpxParse = require("gpx-parse");
 module.exports = class GPXParse {
 
   parse(fileName) {
-    //from file
+    //gpx from file
     gpxParse.parseGpxFromFile(fileName, function(error, data) {
       const element = document.getElementById("poly-map");
-      let mappy = element.getAttribute("map");
-      
-    	//do stuff
-    	console.log('inside function!');
-    	console.log(JSON.stringify(data.tracks[0].segments));
 
+      // convert to custom format that leaflet-polymer understands
+      let layer = {};
       let polyl = [];
 
       for (let segment of data.tracks[0].segments[0]) {
@@ -20,16 +17,15 @@ module.exports = class GPXParse {
         if ((typeof lat === 'undefined') || (typeof lng === 'undefined')) {
           continue;
         }
-        polyl.push([lat, lng]);
+        polyl.push( {lat: lat, lng: lng });
       };
 
-      var polyline = L.polyline(polyl, {color: 'blue'}).addTo(mappy);
+      layer["100"] = polyl;
 
-      var corner1 = L.latLng(polyl[0][0], polyl[0][1]),
-      corner2 = L.latLng(polyl[polyl.length-1][0], polyl[polyl.length-1][1]),
-      bounds = L.latLngBounds(corner1, corner2);
+      element.setAttribute("polylines", JSON.stringify(layer));
 
-      mappy.fitBounds(bounds);
+      var event = new Event('import');
+      element.dispatchEvent(event);
     });
   }
 }
