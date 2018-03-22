@@ -5,8 +5,9 @@ a map layer. Using the context menu (right mouse click) you can save and load th
 Furthermore, you can switch layers between OSM layer, ESRI layer, OpenTopomap, or Stamen layer.
 
 
-Load GPX files with the context menu and "Load GPX". You can then edit the track and
-save it with "Save Track" (in a custom format).
+Load GPX files with the context menu and "Load GPX". In order to save again as a GPX you can
+click "Save GPX" in the context menu.
+Also, you can edit the track and save it with "Save Track" (in a custom format).
 
 
 # Development
@@ -30,12 +31,18 @@ npm install
 npm start
 ```
 
+## Testing the Application
+
+```
+jest tests/*.js
+```
+
+
 
 ## Roadmap
 
 On the roadmap there are several features:
 
-* save as GPX
 * load and save GeoJSON
 * load and save KML
 

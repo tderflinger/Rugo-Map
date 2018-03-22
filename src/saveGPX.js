@@ -24,7 +24,20 @@ const rugoSaveGpx = function () {
 
     let polylines = JSON.parse(content);
 
-    const sXML = GPXExporter.export();
+    let gpxSeg = [];
+
+    for (let polyline in polylines) {
+        console.log(JSON.stringify(polylines[polyline]));
+
+        let gpxLine = [];
+        for (let line of polylines[polyline]) {
+            gpxLine.push({ lat: line.lat, lng: line.lng, ele:0, time: "2009-10-17T18:37:26Z" });
+        }
+
+        gpxSeg.push(gpxLine)
+    }
+
+    const sXML = GPXExporter.export(gpxSeg);
 
     // fileName is a string that contains the path and filename created in the save file dialog.
     fs.writeFile(fileName, sXML, (err) => {
