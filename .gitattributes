@@ -1,2 +1,2 @@
-bower_components
-gpx
+bower_components/*
+gpx/*
