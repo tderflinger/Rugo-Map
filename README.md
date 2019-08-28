@@ -1,5 +1,7 @@
 # Rugo Map
 
+Attention: Please do not clone and run this application, it has security vulnerabilities. Currently, I don't have time to fix them.
+
 Rugo Map is an Electron JavaScript desktop application. You can edit tracks on
 a map layer. Using the context menu (right mouse click) you can save and load the tracks.
 Furthermore, you can switch layers between OSM layer, ESRI layer, OpenTopomap, or Stamen layer.
